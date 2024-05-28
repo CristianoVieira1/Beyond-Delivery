@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "delivery-spacex",
+    "slug": "delivery-spacex",
+    "version": "1.0.0",
+    "plugins": ["expo-font"]
+  },
+  "name": "delivery",
+  "displayName": "delivery"
+}

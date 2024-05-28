@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "346785538671",
+    "project_id": "deliveryspacex",
+    "storage_bucket": "deliveryspacex.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:346785538671:android:92f563fcbb6a22bc85239a",
+        "android_client_info": {
+          "package_name": "com.deliveryspacex"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKLm7pBkVBbImxPs_9pUpTxVYow35gK30"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
