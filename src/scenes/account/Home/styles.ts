@@ -25,3 +25,17 @@ export const Title = styled.Text`
 export const MoreButton = styled.TouchableOpacity`
   padding: 8px;
 `;
+
+export const AddButton = styled.TouchableOpacity`
+  margin: 20px;
+  background-color: #6200ee;
+  border-radius: 5px;
+  padding: 15px;
+  align-items: center;
+`;
+
+export const AddButtonText = styled.Text`
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+`;

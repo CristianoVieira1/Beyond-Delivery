@@ -1,78 +1,82 @@
 import AddressCard, {Address} from '@components/AddressCard';
-import Button from '@components/Button';
-import 'moment/locale/pt-br';
-import {useRef, useState} from 'react';
+import AddressModal from '@components/DeliveryInfoModal';
+import {useNavigation} from '@react-navigation/native';
+import React, {useEffect, useRef, useState} from 'react';
 import {Alert, ScrollView} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import LocalStorage from '../../../persistence/LocalStorage';
 import * as S from './styles';
-import {useViewModel} from './viewModel';
 
-const initialAddresses: Address[] = [
-  {
-    id: 1,
-    label: 'Home',
-    address:
-      'W3-092, 9th Floor, Wellington Estate, Near DLF Phase 5 Club, Opposite ...',
-    phone: '+91 955 523 8994',
-    isSelected: false,
-    onAction: () => {},
-  },
-  {
-    id: 2,
-    label: 'Office',
-    address:
-      'W3-092, 9th Floor, Wellington Estate, Near DLF Phase 5 Club, Opposite ...',
-    phone: '+91 955 523 8994',
-    isSelected: false,
-    onAction: () => {},
-  },
-  {
-    id: 3,
-    label: "Sunny's House",
-    address:
-      'W3-092, 9th Floor, Wellington Estate, Near DLF Phase 5 Club, Opposite ...',
-    phone: '+91 955 523 8994',
-    isSelected: false,
-    onAction: () => {},
-  },
-  {
-    id: 4,
-    label: 'Other Location',
-    address:
-      'W3-092, 9th Floor, Wellington Estate, Near DLF Phase 5 Club, Opposite ...',
-    phone: '+91 955 523 8994',
-    isSelected: false,
-    onAction: () => {},
-  },
-];
+const initialAddresses: Address[] = [];
 
 const Home: React.FC = () => {
+  const navigation = useNavigation();
   const scrollRef = useRef<ScrollView>(null);
-  const {} = useViewModel();
   const [addresses, setAddresses] = useState<Address[]>(initialAddresses);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  useEffect(() => {
+    const loadAddresses = async () => {
+      try {
+        const storedAddresses = await LocalStorage.getAddresses();
+        console.log('storedAddresses', storedAddresses);
+        if (storedAddresses) {
+          setAddresses(storedAddresses);
+        }
+      } catch (error) {
+        console.error('Falha ao salvar endereços:', error);
+      }
+    };
+
+    loadAddresses();
+  }, []);
+
+  const saveAddresses = async (newAddresses: Address[]) => {
+    try {
+      await LocalStorage.setAddresses(newAddresses);
+      setAddresses(newAddresses);
+    } catch (error) {
+      console.error('Falha ao salvar endereços:', error);
+    }
+  };
 
   const toggleSelectAddress = (id: number) => {
-    setAddresses(prevAddresses =>
-      prevAddresses.map(address =>
-        address.id === id
-          ? {...address, isSelected: !address.isSelected}
-          : address,
-      ),
+    const newAddresses = addresses.map(address =>
+      address.id === id
+        ? {...address, isSelected: !address.isSelected}
+        : address,
     );
+    saveAddresses(newAddresses);
   };
 
   const deleteSelectedAddresses = () => {
     const selectedAddresses = addresses.filter(address => address.isSelected);
     if (selectedAddresses.length === 0) {
-      Alert.alert(
-        'Attention',
-        'Please select one or more addresses to delete.',
-      );
+      Alert.alert('Atenção', 'Selecione um ou mais endereços para excluir.');
     } else {
-      setAddresses(prevAddresses =>
-        prevAddresses.filter(address => !address.isSelected),
-      );
+      const newAddresses = addresses.filter(address => !address.isSelected);
+      saveAddresses(newAddresses);
     }
+  };
+
+  const handleViewOnMap = (address: Address) => {
+    if (address.label.toLowerCase() === 'marte') {
+      Alert.alert('Map View', 'Marte ainda está sendo mapeada.');
+    } else {
+      navigation.navigate('MapScreen', {address});
+    }
+  };
+
+  const handleSaveDeliveryAddress = (
+    collectionAddress: Omit<Address, 'onAction' | 'onViewOnMap'>,
+    deliveryAddress: Omit<Address, 'onAction' | 'onViewOnMap'>,
+  ) => {
+    const newAddresses = [
+      ...addresses,
+      {...collectionAddress, id: addresses.length + 1},
+      {...deliveryAddress, id: addresses.length + 2},
+    ];
+    saveAddresses(newAddresses);
   };
 
   return (
@@ -84,25 +88,30 @@ const Home: React.FC = () => {
           <Icon name="delete" size={24} color="#000" />
         </S.MoreButton>
       </S.Header>
-      <Button
-        type="auxiliary"
-        size="large"
-        title="Adicionar novo endereço"
-        onPress={() => {}}
-      />
+      <S.AddButton onPress={() => setIsModalVisible(true)}>
+        <S.AddButtonText>Adicionar nova entrega</S.AddButtonText>
+      </S.AddButton>
 
       <ScrollView
         ref={scrollRef}
         scrollEventThrottle={16}
-        showsVerticalScrollIndicator={false}>
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}>
         {addresses.map(address => (
           <AddressCard
             key={address.id}
             {...address}
             onAction={toggleSelectAddress}
+            onViewOnMap={() => handleViewOnMap(address)}
           />
         ))}
       </ScrollView>
+
+      <AddressModal
+        visible={isModalVisible}
+        onClose={() => setIsModalVisible(false)}
+        onSave={handleSaveDeliveryAddress}
+      />
     </S.Container>
   );
 };

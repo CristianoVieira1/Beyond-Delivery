@@ -1,8 +1,8 @@
-import React, { memo } from "react";
-import { TextInputProps } from "react-native";
+import React, {memo} from 'react';
+import {TextInputProps} from 'react-native';
 
-import Theme from "../../theme";
-import SecureText from "./SecureText";
+import Theme from '../../theme';
+import SecureText from './SecureText';
 import {
   Container,
   Content,
@@ -10,21 +10,24 @@ import {
   Label,
   TouchArea,
   ValidationMessage,
-} from "./styles";
-import { useViewModel } from "./viewMode";
+} from './styles';
+import {useViewModel} from './viewMode';
 
 export type Mask =
-  | "cpf"
-  | "cep"
-  | "date"
-  | "default"
-  | "password"
-  | "dddNumber"
-  | "phoneNumber";
+  | 'cpf'
+  | 'cep'
+  | 'date'
+  | 'default'
+  | 'password'
+  | 'dddNumber'
+  | 'phoneNumber'
+  | 'addressState'
+  | 'addressCity'
+  | 'addressNumber';
 
-export type BackgroundColor = "transparent" | "white";
-export type ColorPlaceholder = "blue" | "white";
-export type ColorLabel = "blue" | "white";
+export type BackgroundColor = 'transparent' | 'white';
+export type ColorPlaceholder = 'blue' | 'white';
+export type ColorLabel = 'blue' | 'white';
 
 export interface Props extends TextInputProps {
   mask?: Mask;
@@ -57,8 +60,8 @@ const InputText = (props: Props) => {
     handleTextChange,
     colorText = Theme.colors.darkGray,
     disabled = false,
-    mask = "default",
-    backgroundColor = "white",
+    mask = 'default',
+    backgroundColor = 'white',
     triggerInputFocus,
     displaySecureIndicator = false,
     ...others
@@ -74,8 +77,7 @@ const InputText = (props: Props) => {
           activeOpacity={0.9}
           backgroundColor={backgroundColor}
           hasError={!!validation}
-          onPress={triggerInputFocus}
-        >
+          onPress={triggerInputFocus}>
           <Input
             {...others}
             ref={inputRef}

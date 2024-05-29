@@ -28,6 +28,12 @@ export const useViewModel = (props: Props) => {
       dddNumber: useMask(text, '99'),
       phoneNumber: useMask(text, '99999-9999'),
       password: useMask(text, '999999'),
+      addressNumber: useMask(text, '9999999'),
+      addressState: useMask(text, '99'),
+      addressCity: useMask(
+        text,
+        '99999999999999999999999999999999999999999999999999999999',
+      ),
     };
 
     onChangeText(inputType[mask]);

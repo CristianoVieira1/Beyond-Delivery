@@ -6,7 +6,7 @@ export type TypeButton =
   | 'disable'
   | 'link'
   | 'cancel'
-  | 'filter'
+  | 'select'
   | 'auxiliary';
 export type SizeButton = 'small' | 'medium' | 'large';
 interface ButtonProps {
@@ -22,8 +22,8 @@ function ButtonColor(type: TypeButton) {
       return theme.colors.buttonDisable;
     case 'cancel':
       return theme.colors.white;
-    case 'filter':
-      return theme.colors.drawerIcons;
+    case 'select':
+      return theme.colors.primary;
     case 'auxiliary':
       return theme.colors.lightPrimary;
     default:
@@ -41,7 +41,7 @@ function ButtonTitleColor(type: TypeButton) {
       return theme.colors.buttonLink;
     case 'cancel':
       return theme.colors.darkGray;
-    case 'filter':
+    case 'select':
       return theme.colors.white;
     case 'auxiliary':
       return theme.colors.primary;

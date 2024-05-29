@@ -1,3 +1,4 @@
+import React from 'react';
 import * as S from './styles';
 
 export interface Address {
@@ -5,8 +6,10 @@ export interface Address {
   label: string;
   phone: string;
   address: string;
+  coordinate: {latitude: number; longitude: number};
   isSelected: boolean;
-  onAction: (id: number) => void;
+  onAction?: (id: number) => void;
+  onViewOnMap?: () => void;
 }
 
 const AddressCard = ({
@@ -16,23 +19,21 @@ const AddressCard = ({
   address,
   onAction,
   isSelected,
+  onViewOnMap,
 }: Address) => {
   return (
-    <S.AddressCard
-      key={id}
-      isSelected={isSelected}
-      onPress={() => onAction(id)}>
+    <S.AddressCard key={id} isSelected={isSelected}>
       <S.AddressHeader>
         <S.AddressLabel>{label}</S.AddressLabel>
         <S.AddressIcon
           name={isSelected ? 'check-box' : 'check-box-outline-blank'}
-          onPress={() => onAction(id)}
+          onPress={() => onAction?.(id)}
         />
       </S.AddressHeader>
       <S.AddressBody>
         <S.AddressText>{address}</S.AddressText>
         <S.PhoneText>{phone}</S.PhoneText>
-        <S.ViewOnMapText>View on map</S.ViewOnMapText>
+        <S.ViewOnMapText onPress={onViewOnMap}>Ver no mapa</S.ViewOnMapText>
       </S.AddressBody>
     </S.AddressCard>
   );
