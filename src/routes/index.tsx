@@ -26,7 +26,7 @@ const Routes = () => {
     }
   }, [session]);
 
-  return !user ? <PrivateRoutes /> : <PublicRoutes />;
+  return user ? <PrivateRoutes /> : <PublicRoutes />;
 };
 
 export default Routes;
