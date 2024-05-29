@@ -1,3 +1,5 @@
 {
-  "appName": "MBR System"
+  "buttonSignIn": "Acessar",
+  "titleSignIn": "Entrar",
+  "welcomeSignIn": "Bem vindo, faça seu login para iniciar!"
 }

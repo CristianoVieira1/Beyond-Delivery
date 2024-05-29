@@ -4,18 +4,18 @@ import * as S from './styles';
 export interface Address {
   id: number;
   label: string;
-  phone: string;
   address: string;
   coordinate: {latitude: number; longitude: number};
   isSelected: boolean;
+  world: string;
   onAction?: (id: number) => void;
   onViewOnMap?: () => void;
 }
 
 const AddressCard = ({
   id,
-  phone,
   label,
+  world,
   address,
   onAction,
   isSelected,
@@ -32,7 +32,7 @@ const AddressCard = ({
       </S.AddressHeader>
       <S.AddressBody>
         <S.AddressText>{address}</S.AddressText>
-        <S.PhoneText>{phone}</S.PhoneText>
+        <S.WordText>{world}</S.WordText>
         <S.ViewOnMapText onPress={onViewOnMap}>Ver no mapa</S.ViewOnMapText>
       </S.AddressBody>
     </S.AddressCard>

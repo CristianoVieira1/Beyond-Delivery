@@ -42,13 +42,6 @@ export const Subtitle = styled.Text`
   padding: 10px;
 `;
 
-export const SectionTitle = styled.Text`
-  font-size: 16px;
-  font-weight: bold;
-  margin-top: 20px;
-  margin-bottom: 10px;
-`;
-
 export const SaveButton = styled.TouchableOpacity`
   background-color: '#6200ea';
   padding: 10px;
@@ -105,4 +98,13 @@ export const AddressOption = styled.TouchableOpacity<{selected: boolean}>`
   border-radius: 8px;
   background-color: ${({selected, theme}) =>
     selected ? theme.colors.primaryLight : 'transparent'};
+`;
+
+export const SectionTitle = styled.Text`
+  font-size: ${({theme}) => theme.fonts.sizes.medium};
+  font-family: ${({theme}) => theme.fonts.bold};
+  color: ${({theme}) => theme.colors.darkGray};
+  line-height: 24px;
+  margin-top: 20px;
+  margin-bottom: 10px;
 `;

@@ -30,9 +30,9 @@ const MapScreen = (props: IProps) => {
         </Marker>
       </MapView>
       <S.InfoContainer>
-        <Text style={{fontSize: 18, fontWeight: 'bold'}}>{address.label}</Text>
-        <Text>{address.address}</Text>
-        <Text>{address.phone}</Text>
+        <S.AddressLabel>{address.label}</S.AddressLabel>
+        <S.AddressText>{address.address}</S.AddressText>
+        <S.WorldText>{address.world}</S.WorldText>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Text style={{color: 'blue', marginTop: 10}}>Voltar</Text>
         </TouchableOpacity>

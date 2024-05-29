@@ -15,19 +15,18 @@ const Home: React.FC = () => {
   const [addresses, setAddresses] = useState<Address[]>(initialAddresses);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  useEffect(() => {
-    const loadAddresses = async () => {
-      try {
-        const storedAddresses = await LocalStorage.getAddresses();
-        console.log('storedAddresses', storedAddresses);
-        if (storedAddresses) {
-          setAddresses(storedAddresses);
-        }
-      } catch (error) {
-        console.error('Falha ao salvar endereços:', error);
+  const loadAddresses = async () => {
+    try {
+      const storedAddresses = await LocalStorage.getAddresses();
+      if (storedAddresses) {
+        setAddresses(storedAddresses);
       }
-    };
+    } catch (error) {
+      console.error('Falha ao carregar endereços:', error);
+    }
+  };
 
+  useEffect(() => {
     loadAddresses();
   }, []);
 
@@ -67,18 +66,6 @@ const Home: React.FC = () => {
     }
   };
 
-  const handleSaveDeliveryAddress = (
-    collectionAddress: Omit<Address, 'onAction' | 'onViewOnMap'>,
-    deliveryAddress: Omit<Address, 'onAction' | 'onViewOnMap'>,
-  ) => {
-    const newAddresses = [
-      ...addresses,
-      {...collectionAddress, id: addresses.length + 1},
-      {...deliveryAddress, id: addresses.length + 2},
-    ];
-    saveAddresses(newAddresses);
-  };
-
   return (
     <S.Container>
       <S.Header>
@@ -110,7 +97,9 @@ const Home: React.FC = () => {
       <AddressModal
         visible={isModalVisible}
         onClose={() => setIsModalVisible(false)}
-        onSave={handleSaveDeliveryAddress}
+        onSave={(newAddresses: Address[]) =>
+          setAddresses(prevAddresses => [...prevAddresses, ...newAddresses])
+        }
       />
     </S.Container>
   );

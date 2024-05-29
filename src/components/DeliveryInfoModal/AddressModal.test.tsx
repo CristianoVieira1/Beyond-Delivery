@@ -1,27 +1,44 @@
-// addressModal.test.tsx
-
 import {fireEvent, render} from '@testing-library/react-native';
 import React from 'react';
-import AddressModal from '.';
+import AddressModal, {AddressModalProps} from '.';
 
-describe('<AddressModal />', () => {
-  it('renders correctly', () => {
-    const onCloseMock = jest.fn();
-    const onSaveMock = jest.fn();
+describe('AddressModal', () => {
+  const mockProps: AddressModalProps = {
+    visible: true,
+    onClose: jest.fn(),
+    onSave: jest.fn(),
+  };
 
-    const {getByText, getByTestId} = render(
-      <AddressModal visible onClose={onCloseMock} onSave={onSaveMock} />,
-    );
+  it('renders correctly with Terra selected by default', () => {
+    const {getByText} = render(<AddressModal {...mockProps} />);
 
-    expect(getByText('Detalhes do Endereço')).toBeTruthy();
-    expect(getByText('Endereço de Entrega')).toBeTruthy();
+    expect(getByText('Detalhes da entrega')).toBeDefined();
+    expect(getByText('Selecione o Mundo da coleta')).toBeDefined();
+    expect(getByText('Terra')).toBeDefined();
+    expect(getByText('Marte')).toBeDefined();
+  });
 
-    const saveButton = getByTestId('save-button');
-    fireEvent.press(saveButton);
-    expect(onSaveMock).toHaveBeenCalledTimes(1);
+  it('calls onClose when close button is pressed', () => {
+    const {getByTestId} = render(<AddressModal {...mockProps} />);
 
-    const closeButton = getByTestId('close-button');
-    fireEvent.press(closeButton);
-    expect(onCloseMock).toHaveBeenCalledTimes(1);
+    fireEvent.press(getByTestId('close-button'));
+    expect(mockProps.onClose).toHaveBeenCalled();
+  });
+
+  it('selects Marte for collection and Terra for delivery', () => {
+    const {getByText} = render(<AddressModal {...mockProps} />);
+
+    fireEvent.press(getByText('Marte'));
+    expect(mockProps.onSave).toHaveBeenCalledWith('Marte');
+
+    fireEvent.press(getByText('Terra'));
+    expect(mockProps.onSave).toHaveBeenCalledWith('Terra');
+  });
+
+  it('calls onSave when save button is pressed', () => {
+    const {getByText} = render(<AddressModal {...mockProps} />);
+
+    fireEvent.press(getByText('Salvar'));
+    expect(mockProps.onSave).toHaveBeenCalled();
   });
 });

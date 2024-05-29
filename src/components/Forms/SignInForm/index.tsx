@@ -6,10 +6,13 @@ import Button from '@components/Button';
 import {ButtonSociais} from '@components/ButtonSociais';
 import InputText from '@components/InputText';
 import React from 'react';
+import {useTranslation} from 'react-i18next';
 import useSignInViewModel from './ViewModel/useSignInViewModel';
 import * as S from './styles';
 
 export function SignInForm() {
+  const {t} = useTranslation();
+
   const {
     validationMessage,
     setValidationMessage,
@@ -26,7 +29,7 @@ export function SignInForm() {
 
   return (
     <S.Form>
-      <S.Title>Entrar</S.Title>
+      <S.Title>{t('titleSignIn')}</S.Title>
       <InputText
         placeholder="E-mail"
         value={email}
@@ -56,7 +59,7 @@ export function SignInForm() {
 
       <Button
         type={isSubmitButtonAvailable ? 'accept' : 'cancel'}
-        title="Entrar"
+        title={t('buttonSignIn')}
         size="large"
         disabled={isSubmitButtonAvailable ? false : true}
         loading={isLoading}

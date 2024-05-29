@@ -55,8 +55,10 @@ export const AddressHeader = styled.View`
 `;
 
 export const AddressLabel = styled.Text`
-  font-size: 16px;
-  font-weight: bold;
+  font-size: ${({theme}) => theme.fonts.sizes.medium};
+  font-family: ${({theme}) => theme.fonts.medium};
+  color: ${({theme}) => theme.colors.primary};
+  line-height: 24px;
 `;
 
 export const AddressIcon = styled(Icon)`
@@ -68,26 +70,32 @@ export const AddressBody = styled.View`
 `;
 
 export const AddressText = styled.Text`
-  font-size: 14px;
-  color: #555;
+  font-size: ${({theme}) => theme.fonts.sizes.medium};
+  font-family: ${({theme}) => theme.fonts.medium};
+  color: ${({theme}) => theme.colors.darkGray};
+  line-height: 24px;
+  padding: 10px 0;
 `;
 
-export const PhoneText = styled.Text`
-  font-size: 14px;
-  color: #555;
-  margin-top: 5px;
+export const WorldText = styled.Text`
+  font-size: ${({theme}) => theme.fonts.sizes.small};
+  font-family: ${({theme}) => theme.fonts.bold};
+  color: ${({theme}) => theme.colors.darkGray};
+  line-height: 24px;
 `;
 
 export const ViewOnMapText = styled.Text`
-  font-size: 14px;
-  color: #6200ee;
+  font-size: ${({theme}) => theme.fonts.sizes.small};
+  font-family: ${({theme}) => theme.fonts.bold};
+  color: ${({theme}) => theme.colors.darkGray};
+  line-height: 24px;
   margin-top: 5px;
   text-decoration: underline;
 `;
 
 export const InfoContainer = styled.View`
   padding: 20px;
-  background-color: #fff;
+  background-color: ${({theme}) => theme.colors.white};
   position: absolute;
   bottom: 0;
   width: 100%;

@@ -27,7 +27,7 @@ export default {
     },
   },
   colors: {
-    primary: '#6A5ACD',
+    primary: '#6200ee',
     white: '#FFFFFF',
     black: '#000000',
     orange: '#FF8200',

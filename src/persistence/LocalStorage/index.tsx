@@ -5,8 +5,8 @@ import {User} from 'src/types/Account';
 export interface Address {
   id: number;
   label: string;
-  phone: string;
   address: string;
+  world: string;
   coordinate: {latitude: number; longitude: number};
   isSelected: boolean;
   onAction?: (id: number) => void;
@@ -59,6 +59,7 @@ class LocalStorage {
 
   static async addAddress(
     label: string,
+    world: string,
     addressDetails: string,
     isSelected: boolean,
   ): Promise<void> {
@@ -66,7 +67,7 @@ class LocalStorage {
       id: Date.now(),
       label,
       address: addressDetails,
-      phone: '',
+      world,
       coordinate: {latitude: 0, longitude: 0},
       isSelected,
     };

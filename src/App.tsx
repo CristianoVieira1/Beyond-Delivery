@@ -1,14 +1,15 @@
+import Load from '@components/Animations/Load';
 import {
   PublicSans_400Regular,
   PublicSans_500Medium,
   PublicSans_700Bold,
   useFonts,
 } from '@expo-google-fonts/public-sans';
-
-import Load from '@components/Animations/Load';
 import {NavigationContainer} from '@react-navigation/native';
+import i18n from '@utils/i18n';
 import {StatusBar} from 'expo-status-bar';
 import {useEffect, useState} from 'react';
+import {I18nextProvider} from 'react-i18next';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {RootSiblingParent} from 'react-native-root-siblings';
 import Toast from 'react-native-toast-message';
@@ -54,10 +55,12 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <NavigationContainer ref={navigationRef}>
-        <StatusBar style="light" translucent backgroundColor="transparent" />
-        <Routes />
-      </NavigationContainer>
+      <I18nextProvider i18n={i18n}>
+        <NavigationContainer ref={navigationRef}>
+          <StatusBar style="light" translucent backgroundColor="transparent" />
+          <Routes />
+        </NavigationContainer>
+      </I18nextProvider>
       <Toast />
     </ThemeProvider>
   );

@@ -4,18 +4,14 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import theme from '../../theme';
 import {Address} from '../AddressCard';
 import Button from '../Button';
+import InputText from '../InputText';
 import useDeliveryInfoViewModel from './ViewModel/useDeliveryInfoViewModel';
-import Collection from './components/Collection';
-import Delivery from './components/Delivery';
 import * as S from './styles';
 
 export interface AddressModalProps {
   visible?: boolean;
   onClose: () => void;
-  onSave: (
-    collectionAddress: Omit<Address, 'onAction' | 'onViewOnMap'>,
-    deliveryAddress: Omit<Address, 'onAction' | 'onViewOnMap'>,
-  ) => void;
+  onSave: (newAddresses: Address[]) => void;
 }
 
 const AddressModal: React.FC<AddressModalProps> = ({
@@ -23,7 +19,42 @@ const AddressModal: React.FC<AddressModalProps> = ({
   onClose,
   onSave,
 }) => {
-  const {handleSave} = useDeliveryInfoViewModel({
+  const {
+    marteLots,
+    handleSave,
+    fetchAddress,
+    deliveryCep,
+    deliveryCity,
+    deliveryState,
+    collectionCep,
+    collectionCity,
+    setDeliveryCep,
+    deliveryNumber,
+    deliveryAddress,
+    collectionState,
+    setDeliveryCity,
+    setDeliveryWord,
+    setCollectionCep,
+    deliveryLandmark,
+    collectionNumber,
+    setCollectionWord,
+    setDeliveryState,
+    collectionAddress,
+    setCollectionCity,
+    setDeliveryNumber,
+    setCollectionState,
+    collectionLandmark,
+    setDeliveryAddress,
+    setCollectionNumber,
+    setDeliveryLandmark,
+    setCollectionAddress,
+    deliveryNeighborhood,
+    setCollectionLandmark,
+    collectionNeighborhood,
+    setDeliveryNeighborhood,
+    setCollectionNeighborhood,
+    isSubmitButtonAvailable,
+  } = useDeliveryInfoViewModel({
     onClose,
     onSave,
   });
@@ -51,17 +82,6 @@ const AddressModal: React.FC<AddressModalProps> = ({
     setCollectionSelected(true);
   };
 
-  const handleSelectCollectionTerra = () => {
-    setSelectedCollectionTerra(true);
-    setSelectedCollectionMarte(false);
-    setCollectionSelected(true);
-  };
-
-  const handleSelectCollectionMarte = () => {
-    setSelectedCollectionMarte(true);
-    setSelectedCollectionTerra(false);
-  };
-
   const handleSelectDeliveryTerra = () => {
     setSelectedDeliveryTerra(true);
     setSelectedDeliveryMarte(false);
@@ -72,13 +92,6 @@ const AddressModal: React.FC<AddressModalProps> = ({
     setSelectedDeliveryMarte(true);
     setSelectedDeliveryTerra(false);
   };
-
-  const marteLots = [
-    {id: '5521', label: 'Lote 5521'},
-    {id: '5522', label: 'Lote 5522'},
-    {id: '5523', label: 'Lote 5523'},
-    {id: '5524', label: 'Lote 5524'},
-  ];
 
   return (
     <Modal visible={visible} transparent={true} animationType="slide">
@@ -98,39 +111,97 @@ const AddressModal: React.FC<AddressModalProps> = ({
               <Button
                 type="accept"
                 title="Terra"
-                onPress={handleSelectCollectionTerra}
+                onPress={() => setCollectionWord('Terra')}
               />
               <Button
                 type="select"
                 title="Marte"
-                onPress={handleSelectCollectionMarte}
+                onPress={() => setCollectionWord('Marte')}
               />
             </S.ButtonView>
 
-            {selectedCollectionTerra ? (
-              <Collection onClose={onClose} onSave={onSave} />
-            ) : null}
+            <S.SectionTitle>Endereço de Coleta</S.SectionTitle>
+            <InputText
+              mask="cep"
+              placeholder="cep"
+              value={collectionCep}
+              onChangeText={setCollectionCep}
+              autoCapitalize="none"
+              autoComplete="off"
+              label="Digite seu CEP"
+              keyboardType="number-pad"
+              onBlur={() => fetchAddress(collectionCep, 'collection')}
+            />
 
-            {selectedCollectionMarte ? (
-              <>
-                <S.Subtitle>Selecione o Lote em Marte</S.Subtitle>
-                {marteLots.map(lot => (
-                  <S.AddressOption
-                    key={lot.id}
-                    selected={selectedMarteAddress === lot.id}
-                    onPress={() => handleSelectMarteAddress(lot.id)}>
-                    <S.AddressIcon
-                      name={
-                        selectedMarteAddress === lot.id
-                          ? 'check-box'
-                          : 'check-box-outline-blank'
-                      }
-                    />
-                    <S.AddressLabel>{lot.label}</S.AddressLabel>
-                  </S.AddressOption>
-                ))}
-              </>
-            ) : null}
+            <InputText
+              mask="default"
+              placeholder="Endereço completo"
+              value={collectionAddress}
+              onChangeText={setCollectionAddress}
+              autoCapitalize="none"
+              autoComplete="off"
+              label="Endereço completo"
+              keyboardType="default"
+              disabled
+            />
+
+            <InputText
+              mask="addressNumber"
+              placeholder="Número"
+              value={collectionNumber}
+              onChangeText={setCollectionNumber}
+              autoCapitalize="none"
+              autoComplete="off"
+              label="Número"
+              keyboardType="number-pad"
+            />
+
+            <InputText
+              mask="addressNumber"
+              placeholder="Estado"
+              value={collectionState}
+              onChangeText={setCollectionState}
+              autoCapitalize="none"
+              autoComplete="off"
+              label="Estado"
+              keyboardType="default"
+              disabled
+            />
+
+            <InputText
+              mask="addressCity"
+              placeholder="Cidade"
+              value={collectionCity}
+              onChangeText={setCollectionCity}
+              autoCapitalize="none"
+              autoComplete="off"
+              label="Cidade"
+              keyboardType="default"
+              disabled
+            />
+
+            <InputText
+              mask="addressCity"
+              placeholder="Bairro"
+              value={collectionNeighborhood}
+              onChangeText={setCollectionNeighborhood}
+              autoCapitalize="none"
+              autoComplete="off"
+              label="Bairro"
+              keyboardType="default"
+              disabled
+            />
+
+            <InputText
+              mask="default"
+              placeholder="Ponto de referência (opcional)"
+              value={collectionLandmark}
+              onChangeText={setCollectionLandmark}
+              autoCapitalize="none"
+              autoComplete="off"
+              label="Ponto de referência (opcional)"
+              keyboardType="default"
+            />
 
             <S.Subtitle>Selecione o Mundo da Entrega</S.Subtitle>
 
@@ -138,48 +209,104 @@ const AddressModal: React.FC<AddressModalProps> = ({
               <Button
                 type="accept"
                 title="Terra"
-                onPress={handleSelectDeliveryTerra}
+                onPress={() => setDeliveryWord('Terra')}
               />
               <Button
                 type="select"
                 title="Marte"
-                onPress={handleSelectDeliveryMarte}
+                onPress={() => setDeliveryWord('Marte')}
               />
             </S.ButtonView>
 
-            {selectedDeliveryTerra ? (
-              <Delivery onClose={onClose} onSave={onSave} />
-            ) : null}
+            <S.SectionTitle>Endereço de Coleta</S.SectionTitle>
+            <InputText
+              mask="cep"
+              placeholder="cep"
+              value={deliveryCep}
+              onChangeText={setDeliveryCep}
+              autoCapitalize="none"
+              autoComplete="off"
+              label="Digite seu CEP"
+              keyboardType="number-pad"
+              onBlur={() => fetchAddress(deliveryCep, 'delivery')}
+            />
 
-            {selectedDeliveryMarte ? (
-              <>
-                <S.Subtitle>Selecione o Lote em Marte</S.Subtitle>
-                {marteLots.map(lot => (
-                  <S.AddressOption
-                    key={lot.id}
-                    selected={selectedMarteAddress === lot.id}
-                    onPress={() => handleSelectMarteAddress(lot.id)}>
-                    <S.AddressIcon
-                      name={
-                        selectedMarteAddress === lot.id
-                          ? 'check-box'
-                          : 'check-box-outline-blank'
-                      }
-                    />
-                    <S.AddressLabel>{lot.label}</S.AddressLabel>
-                  </S.AddressOption>
-                ))}
-              </>
-            ) : null}
+            <InputText
+              mask="default"
+              placeholder="Endereço completo"
+              value={deliveryAddress}
+              onChangeText={setDeliveryAddress}
+              autoCapitalize="none"
+              autoComplete="off"
+              label="Endereço completo"
+              keyboardType="default"
+              disabled
+            />
 
-            {(collectionSelected && deliverySelected) ||
-            selectedDeliveryMarte ? (
-              <Button
-                type="accept"
-                title="Salvar"
-                onPress={() => handleSave()}
-              />
-            ) : null}
+            <InputText
+              mask="addressNumber"
+              placeholder="Número"
+              value={deliveryNumber}
+              onChangeText={setDeliveryNumber}
+              autoCapitalize="none"
+              autoComplete="off"
+              label="Número"
+              keyboardType="number-pad"
+            />
+
+            <InputText
+              mask="addressNumber"
+              placeholder="Estado"
+              value={deliveryState}
+              onChangeText={setDeliveryState}
+              autoCapitalize="none"
+              autoComplete="off"
+              label="Estado"
+              keyboardType="default"
+              disabled
+            />
+
+            <InputText
+              mask="addressCity"
+              placeholder="Cidade"
+              value={deliveryCity}
+              onChangeText={setDeliveryCity}
+              autoCapitalize="none"
+              autoComplete="off"
+              label="Cidade"
+              keyboardType="default"
+              disabled
+            />
+
+            <InputText
+              mask="addressCity"
+              placeholder="Bairro"
+              value={deliveryNeighborhood}
+              onChangeText={setDeliveryNeighborhood}
+              autoCapitalize="none"
+              autoComplete="off"
+              label="Bairro"
+              keyboardType="default"
+              disabled
+            />
+
+            <InputText
+              mask="default"
+              placeholder="Ponto de referência (opcional)"
+              value={deliveryLandmark}
+              onChangeText={setDeliveryLandmark}
+              autoCapitalize="none"
+              autoComplete="off"
+              label="Ponto de referência (opcional)"
+              keyboardType="default"
+            />
+
+            <Button
+              type={isSubmitButtonAvailable ? 'accept' : 'cancel'}
+              title="Salvar"
+              onPress={handleSave}
+              disabled={isSubmitButtonAvailable ? false : true}
+            />
           </ScrollView>
         </S.ModalContent>
       </S.ModalContainer>

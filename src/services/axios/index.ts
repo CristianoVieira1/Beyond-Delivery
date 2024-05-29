@@ -1,7 +1,7 @@
-import axios from "axios";
+import axios from 'axios';
 
 const API = axios.create({
-  baseURL: "https://api.spacexdata.com/v5",
+  baseURL: '',
   timeout: 90000,
 });
 
